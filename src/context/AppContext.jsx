@@ -4,10 +4,10 @@ export const AppContext = createContext();
 
 export function AppProvider({ children }) {
   const [songs, setSongs] = useState([]);
-  const [selectedSong, setSelectedSong] = useState(null);
-  const [user, setUser] = useState(null); // Estado para el usuario autenticado
-  const [activeSection, setActiveSection] = useState('home'); // Estado para la sección activa
-  const [userSongs, setUserSongs] = useState([]); // Canciones del usuario logueado
+  const [selectedSong, setSelectedSong] = useState(null); // Estado para la canción seleccionada
+  const [user, setUser] = useState(null);
+  const [activeSection, setActiveSection] = useState('home');
+  const [userSongs, setUserSongs] = useState([]);
 
   const login = (userData) => {
     const userWithId = {
@@ -113,7 +113,7 @@ export function AppProvider({ children }) {
         songs,
         setSongs,
         selectedSong,
-        setSelectedSong,
+        setSelectedSong, // Asegúrate de incluir esta función
         user,
         login,
         logout,
@@ -122,7 +122,7 @@ export function AppProvider({ children }) {
         addSongToUser,
         removeSongFromUser,
         userSongs,
-        fetchUserSongs, // Añadir la función al contexto
+        fetchUserSongs,
       }}
     >
       {children}
