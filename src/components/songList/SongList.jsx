@@ -1,8 +1,16 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/AppContext';
+import './SongList.css'; // Importar los estilos
 
 function SongList() {
-  const { songs, setSongs, setSelectedSong, addSongToUser, userSongs } = useContext(AppContext);
+  const { songs, setSongs, setSelectedSong, addSongToUser, userSongs, user } = useContext(AppContext);
+  const [newSong, setNewSong] = useState({
+    title: '',
+    artist: '',
+    difficulty: 'easy',
+    tuning: '',
+    tablature_url: '',
+  });
 
   useEffect(() => {
     const fetchSongs = async () => {
@@ -14,14 +22,77 @@ function SongList() {
     fetchSongs();
   }, [setSongs]);
 
-  // Filtrar canciones que no están en la lista del usuario
   const filteredSongs = songs.filter(
     (song) => !userSongs.some((userSong) => userSong.song_id === song.song_id)
   );
 
+  const handleAddSong = async () => {
+    try {
+      const response = await fetch('http://localhost:3020/api/songs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify(newSong),
+      });
+
+      if (!response.ok) {
+        const { error } = await response.json();
+        throw new Error(error || 'Error al añadir la canción.');
+      }
+
+      const addedSong = await response.json();
+      setSongs((prevSongs) => [...prevSongs, addedSong]);
+      alert('Canción añadida correctamente.');
+      setNewSong({ title: '', artist: '', difficulty: 'easy', tuning: '', tablature_url: '' });
+    } catch (error) {
+      console.error(error.message);
+      alert('No se pudo añadir la canción.');
+    }
+  };
+
   return (
     <div>
       <h2>Lista de Canciones</h2>
+      {user?.role === 'admin' && (
+        <div className="add-song-form">
+          <h3>Añadir Canción</h3>
+          <input
+            type="text"
+            placeholder="Título"
+            value={newSong.title}
+            onChange={(e) => setNewSong({ ...newSong, title: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Artista"
+            value={newSong.artist}
+            onChange={(e) => setNewSong({ ...newSong, artist: e.target.value })}
+          />
+          <select
+            value={newSong.difficulty}
+            onChange={(e) => setNewSong({ ...newSong, difficulty: e.target.value })}
+          >
+            <option value="easy">Fácil</option>
+            <option value="medium">Media</option>
+            <option value="hard">Difícil</option>
+          </select>
+          <input
+            type="text"
+            placeholder="Afinación"
+            value={newSong.tuning}
+            onChange={(e) => setNewSong({ ...newSong, tuning: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="URL de la tablatura"
+            value={newSong.tablature_url}
+            onChange={(e) => setNewSong({ ...newSong, tablature_url: e.target.value })}
+          />
+          <button onClick={handleAddSong}>Añadir Canción</button>
+        </div>
+      )}
       <ul>
         {filteredSongs.map((song) => (
           <li key={song.song_id}>

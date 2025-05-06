@@ -1,15 +1,24 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 export const AppContext = createContext();
 
 export function AppProvider({ children }) {
   const [songs, setSongs] = useState([]);
   const [selectedSong, setSelectedSong] = useState(null); // Estado para la canción seleccionada
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [activeSection, setActiveSection] = useState('home');
   const [userSongs, setUserSongs] = useState([]);
 
-  const login = (userData) => {
+  useEffect(() => {
+    if (user) {
+      fetchUserSongs(); // Cargar las canciones del usuario al iniciar la aplicación
+    }
+  }, [user]);
+
+  const login = async (userData) => {
     const userWithId = {
       user_id: userData.id, // Asegúrate de mapear el campo `id` a `user_id`
       username: userData.username,
@@ -19,6 +28,9 @@ export function AppProvider({ children }) {
     };
     setUser(userWithId);
     localStorage.setItem('user', JSON.stringify(userWithId)); // Guardar en localStorage
+
+    // Cargar las canciones del usuario después de que el estado `user` se haya actualizado
+    await fetchUserSongs();
   };
 
   const logout = () => {
@@ -82,7 +94,7 @@ export function AppProvider({ children }) {
 
   const fetchUserSongs = async () => {
     if (!user || !user.user_id) {
-      alert('Debes iniciar sesión para ver tus canciones.');
+      // Si el usuario no está definido, simplemente retorna sin mostrar alerta
       return;
     }
 
