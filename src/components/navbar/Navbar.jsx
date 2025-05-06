@@ -55,6 +55,14 @@ function Navbar() {
         </li>
         <li>
           <button
+            className={`navbar-button ${activeSection === 'my-songs' ? 'active' : ''}`}
+            onClick={() => setActiveSection('my-songs')}
+          >
+            Mis Canciones
+          </button>
+        </li>
+        <li>
+          <button
             className={`navbar-button ${activeSection === 'profile' ? 'active' : ''}`}
             onClick={() => setActiveSection('profile')}
           >

@@ -2,7 +2,8 @@ import Navbar from './components/navbar/Navbar';
 import Header from './components/header/Header';
 import SongList from './components/songList/SongList';
 import SongDetails from './components/songDetails/SongDetails';
-import Profile from './components/profile/Profile'; // Importar el componente Profile
+import Profile from './components/profile/Profile';
+import MySongs from './components/mySongs/MySongs';
 import { AppProvider, AppContext } from './context/AppContext';
 import { useContext } from 'react';
 
@@ -21,6 +22,7 @@ function AppContent() {
           <SongDetails />
         </div>
       )}
+      {activeSection === 'my-songs' && <MySongs />}
       {activeSection === 'profile' && <Profile />}
     </div>
   );

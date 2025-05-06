@@ -7,10 +7,18 @@ export function AppProvider({ children }) {
   const [selectedSong, setSelectedSong] = useState(null);
   const [user, setUser] = useState(null); // Estado para el usuario autenticado
   const [activeSection, setActiveSection] = useState('home'); // Estado para la sección activa
+  const [userSongs, setUserSongs] = useState([]); // Canciones del usuario logueado
 
   const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData)); // Guardar en localStorage
+    const userWithId = {
+      user_id: userData.id, // Asegúrate de mapear el campo `id` a `user_id`
+      username: userData.username,
+      email: userData.email,
+      role: userData.role,
+      token: userData.token,
+    };
+    setUser(userWithId);
+    localStorage.setItem('user', JSON.stringify(userWithId)); // Guardar en localStorage
   };
 
   const logout = () => {
@@ -72,6 +80,33 @@ export function AppProvider({ children }) {
     }
   };
 
+  const fetchUserSongs = async () => {
+    if (!user || !user.user_id) {
+      alert('Debes iniciar sesión para ver tus canciones.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3020/api/users/${user.user_id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const { error } = await response.json();
+        throw new Error(error || 'Error al obtener las canciones del usuario.');
+      }
+
+      const data = await response.json();
+      setUserSongs(data.songs); // Extraer solo las canciones del usuario
+    } catch (error) {
+      console.error(error.message);
+      alert('No se pudieron cargar las canciones del usuario.');
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -85,7 +120,9 @@ export function AppProvider({ children }) {
         activeSection,
         setActiveSection,
         addSongToUser,
-        removeSongFromUser, // Añadir la función al contexto
+        removeSongFromUser,
+        userSongs,
+        fetchUserSongs, // Añadir la función al contexto
       }}
     >
       {children}
