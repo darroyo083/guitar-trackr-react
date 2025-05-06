@@ -11,7 +11,10 @@ function SongList() {
     tuning: '',
     tablature_url: '',
   });
-  const [editingSong, setEditingSong] = useState(null); // Estado para la canción que se está editando
+  const [editingSong, setEditingSong] = useState(null);
+  const [difficultyFilter, setDifficultyFilter] = useState(''); // Filtro por dificultad
+  const [artistFilter, setArtistFilter] = useState(''); // Filtro por artista
+  const [tuningFilter, setTuningFilter] = useState(''); // Filtro por afinación
 
   useEffect(() => {
     const fetchSongs = async () => {
@@ -23,9 +26,11 @@ function SongList() {
     fetchSongs();
   }, [setSongs]);
 
-  const filteredSongs = songs.filter(
-    (song) => !userSongs.some((userSong) => userSong.song_id === song.song_id)
-  );
+  const filteredSongs = songs
+    .filter((song) => !userSongs.some((userSong) => userSong.song_id === song.song_id))
+    .filter((song) => (difficultyFilter ? song.difficulty === difficultyFilter : true)) // Filtrar por dificultad
+    .filter((song) => (artistFilter ? song.artist.toLowerCase().includes(artistFilter.toLowerCase()) : true)) // Filtrar por artista
+    .filter((song) => (tuningFilter ? song.tuning.toLowerCase().includes(tuningFilter.toLowerCase()) : true)); // Filtrar por afinación
 
   const handleAddSong = async () => {
     try {
@@ -115,6 +120,39 @@ function SongList() {
   return (
     <div>
       <h2>Lista de Canciones</h2>
+      <div className="filter-section">
+        <label htmlFor="difficulty-filter">Filtrar por dificultad:</label>
+        <select
+          id="difficulty-filter"
+          value={difficultyFilter}
+          onChange={(e) => setDifficultyFilter(e.target.value)}
+        >
+          <option value="">Todas</option>
+          <option value="easy">Fácil</option>
+          <option value="medium">Media</option>
+          <option value="hard">Difícil</option>
+        </select>
+      </div>
+      <div className="filter-section">
+        <label htmlFor="artist-filter">Buscar por artista:</label>
+        <input
+          id="artist-filter"
+          type="text"
+          placeholder="Nombre del artista"
+          value={artistFilter}
+          onChange={(e) => setArtistFilter(e.target.value)}
+        />
+      </div>
+      <div className="filter-section">
+        <label htmlFor="tuning-filter">Buscar por afinación:</label>
+        <input
+          id="tuning-filter"
+          type="text"
+          placeholder="Afinación"
+          value={tuningFilter}
+          onChange={(e) => setTuningFilter(e.target.value)}
+        />
+      </div>
       {user?.role === 'admin' && (
         <div className="add-song-form">
           <h3>Añadir Canción</h3>
