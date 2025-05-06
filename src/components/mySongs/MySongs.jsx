@@ -3,14 +3,20 @@ import { AppContext } from '../../context/AppContext';
 import SongDetails from '../songDetails/SongDetails';
 
 function MySongs() {
-  const { userSongs, fetchUserSongs, removeSongFromUser, selectedSong, setSelectedSong } = useContext(AppContext);
+  const { user, userSongs, fetchUserSongs, removeSongFromUser, selectedSong, setSelectedSong } = useContext(AppContext);
   const [difficultyFilter, setDifficultyFilter] = useState(''); // Filtro por dificultad
   const [artistFilter, setArtistFilter] = useState(''); // Filtro por artista
   const [tuningFilter, setTuningFilter] = useState(''); // Filtro por afinación
 
   useEffect(() => {
-    fetchUserSongs(); // Cargar las canciones del usuario al montar el componente
-  }, [fetchUserSongs]);
+    if (user) {
+      fetchUserSongs(); // Cargar las canciones del usuario al montar el componente
+    }
+  }, [user, fetchUserSongs]);
+
+  if (!user) {
+    return <p>No estás autenticado. Por favor, inicia sesión.</p>;
+  }
 
   const filteredUserSongs = userSongs
     .filter((song) => (difficultyFilter ? song.difficulty === difficultyFilter : true)) // Filtrar por dificultad

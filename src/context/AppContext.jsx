@@ -58,6 +58,9 @@ export function AppProvider({ children }) {
         throw new Error(error || 'Error al añadir la canción.');
       }
 
+      // Actualizar el estado de las canciones eliminando la canción añadida
+      setSongs((prevSongs) => prevSongs.filter((song) => song.song_id !== songId));
+
       alert('Canción añadida a tu repertorio.');
     } catch (error) {
       console.error(error.message);
@@ -125,7 +128,7 @@ export function AppProvider({ children }) {
         songs,
         setSongs,
         selectedSong,
-        setSelectedSong, // Asegúrate de incluir esta función
+        setSelectedSong,
         user,
         login,
         logout,

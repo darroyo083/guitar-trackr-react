@@ -14,8 +14,15 @@ function AppContent() {
     <div>
       <Navbar />
       <Header />
-      <p>¡Bienvenido a la aplicación Guitar Trackr!</p>
-      {activeSection === 'home' && <p>Esta es la página de inicio.</p>}
+      {activeSection === 'home' && (
+        <div>
+          <p>¡Bienvenido a la aplicación Guitar Trackr!</p>
+          <p>
+            Guitar Trackr es una aplicación diseñada para ayudarte a gestionar tus canciones de guitarra 
+            y explorar nuevas canciones para aprender. ¡Empieza ahora!
+          </p>
+        </div>
+      )}
       {activeSection === 'songs' && (
         <div style={{ display: 'flex', gap: '2rem' }}>
           <SongList />
