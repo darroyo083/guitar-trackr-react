@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
+import "./SongDetails.css";
 
 function SongDetails() {
   const { selectedSong } = useContext(AppContext);
@@ -9,7 +10,7 @@ function SongDetails() {
   }
 
   return (
-    <div>
+    <div className="song-details">
       <h2>Detalles de la Canción</h2>
       <p><strong>Título:</strong> {selectedSong.title}</p>
       <p><strong>Artista:</strong> {selectedSong.artist}</p>
