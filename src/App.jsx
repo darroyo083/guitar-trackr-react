@@ -23,12 +23,9 @@ function AppContent() {
           </p>
         </div>
       )}
-      {activeSection === 'songs' && (
-        <div style={{ display: 'flex', gap: '2rem' }}>
+      {activeSection === 'songs' && 
           <SongList />
-          <SongDetails />
-        </div>
-      )}
+      }
       {activeSection === 'my-songs' && <MySongs />}
       {activeSection === 'profile' && <Profile />}
     </div>

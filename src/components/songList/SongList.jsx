@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/AppContext';
+import SongDetails from '../songDetails/SongDetails';
 import './SongList.css';
-import '../mySongs/MySongs.css'; // Importar los estilos de "Mis Canciones"
+import '../mySongs/MySongs.css'; // Reutilizar estilos de "Mis Canciones"
 
 function SongList() {
   const { songs, setSongs, setSelectedSong, addSongToUser, userSongs, user } = useContext(AppContext);
@@ -13,9 +14,16 @@ function SongList() {
 
   useEffect(() => {
     const fetchSongs = async () => {
-      const response = await fetch('http://localhost:3020/api/songs');
-      const data = await response.json();
-      setSongs(data);
+      try {
+        const response = await fetch('http://localhost:3020/api/songs');
+        if (!response.ok) {
+          throw new Error('Error al cargar las canciones.');
+        }
+        const data = await response.json();
+        setSongs(data);
+      } catch (error) {
+        console.error('Error al cargar las canciones:', error.message);
+      }
     };
 
     fetchSongs();
@@ -90,62 +98,71 @@ function SongList() {
   };
 
   return (
-    <div>
-      <h2>Lista de Canciones</h2>
-      <div className="filter-section">
-        <label htmlFor="difficulty-filter">Filtrar por dificultad:</label>
-        <select
-          id="difficulty-filter"
-          value={difficultyFilter}
-          onChange={(e) => setDifficultyFilter(e.target.value)}
-        >
-          <option value="">Todas</option>
-          <option value="easy">Fácil</option>
-          <option value="medium">Media</option>
-          <option value="hard">Difícil</option>
-        </select>
+    <div className="my-songs-container">
+      {/* Columna izquierda: Lista de canciones */}
+      <div className="my-songs-list">
+        <h2>Lista de Canciones</h2>
+        <div className="filter-section">
+          <label htmlFor="difficulty-filter">Filtrar por dificultad:</label>
+          <select
+            id="difficulty-filter"
+            value={difficultyFilter}
+            onChange={(e) => setDifficultyFilter(e.target.value)}
+          >
+            <option value="">Todas</option>
+            <option value="easy">Fácil</option>
+            <option value="medium">Media</option>
+            <option value="hard">Difícil</option>
+          </select>
+        </div>
+        <div className="filter-section">
+          <label htmlFor="artist-filter">Buscar por artista:</label>
+          <input
+            id="artist-filter"
+            type="text"
+            placeholder="Nombre del artista"
+            value={artistFilter}
+            onChange={(e) => setArtistFilter(e.target.value)}
+          />
+        </div>
+        <div className="filter-section">
+          <label htmlFor="tuning-filter">Buscar por afinación:</label>
+          <input
+            id="tuning-filter"
+            type="text"
+            placeholder="Afinación"
+            value={tuningFilter}
+            onChange={(e) => setTuningFilter(e.target.value)}
+          />
+        </div>
+        <ul className="song-list">
+          {filteredSongs.map((song) => (
+            <li key={song.song_id} className="song-item">
+              <div className="song-item-content" onClick={() => setSelectedSong(song)}>
+                <div className="song-item-title">{song.title}</div>
+                <div className="song-item-artist">Artista: {song.artist}</div>
+                <div className="song-item-hint">Haz clic para ver los detalles</div>
+              </div>
+              <div className="song-item-actions">
+                <button onClick={(e) => { e.stopPropagation(); addSongToUser(song.song_id); }}>Añadir al repertorio</button>
+                {user?.role === 'admin' && (
+                  <>
+                    <button onClick={(e) => { e.stopPropagation(); handleEditSong(song); }}>Editar</button>
+                    <button onClick={(e) => { e.stopPropagation(); handleDeleteSong(song.song_id); }}>Eliminar</button>
+                  </>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
-      <div className="filter-section">
-        <label htmlFor="artist-filter">Buscar por artista:</label>
-        <input
-          id="artist-filter"
-          type="text"
-          placeholder="Nombre del artista"
-          value={artistFilter}
-          onChange={(e) => setArtistFilter(e.target.value)}
-        />
-      </div>
-      <div className="filter-section">
-        <label htmlFor="tuning-filter">Buscar por afinación:</label>
-        <input
-          id="tuning-filter"
-          type="text"
-          placeholder="Afinación"
-          value={tuningFilter}
-          onChange={(e) => setTuningFilter(e.target.value)}
-        />
-      </div>
-      <ul className="song-list">
-        {filteredSongs.map((song) => (
-          <li key={song.song_id} className="song-item">
-            <div className="song-item-content" onClick={() => setSelectedSong(song)}>
-              <div className="song-item-title">{song.title}</div>
-              <div className="song-item-artist">Artista: {song.artist}</div>
-              <div className="song-item-hint">Haz clic para ver los detalles</div>
-            </div>
-            <div className="song-item-actions">
-              <button onClick={(e) => { e.stopPropagation(); addSongToUser(song.song_id); }}>Añadir al repertorio</button>
-              {user?.role === 'admin' && (
-                <>
-                  <button onClick={(e) => { e.stopPropagation(); handleEditSong(song); }}>Editar</button>
-                  <button onClick={(e) => { e.stopPropagation(); handleDeleteSong(song.song_id); }}>Eliminar</button>
-                </>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
 
+      {/* Columna derecha: Detalles de la canción */}
+      <div className="my-songs-details">
+        <SongDetails />
+      </div>
+
+      {/* Modal para editar canción */}
       {isEditing && (
         <div className="modal-overlay">
           <div className="modal-content">
