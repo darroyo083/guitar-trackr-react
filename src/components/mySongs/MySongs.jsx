@@ -5,24 +5,31 @@ import './MySongs.css';
 
 function MySongs() {
   const { user, userSongs, fetchUserSongs, removeSongFromUser, selectedSong, setSelectedSong } = useContext(AppContext);
-  const [difficultyFilter, setDifficultyFilter] = useState(''); // Filtro por dificultad
-  const [artistFilter, setArtistFilter] = useState(''); // Filtro por artista
-  const [tuningFilter, setTuningFilter] = useState(''); // Filtro por afinación
+  const [difficultyFilter, setDifficultyFilter] = useState('');
+  const [artistFilter, setArtistFilter] = useState('');
+  const [tuningFilter, setTuningFilter] = useState('');
 
   useEffect(() => {
     if (user) {
-      fetchUserSongs(); // Cargar las canciones del usuario al montar el componente
+      fetchUserSongs();
     }
   }, [user, fetchUserSongs]);
 
   if (!user) {
-    return <p style={{margin: "20px"}}>No estás autenticado. Por favor, inicia sesión.</p>;
+    return (
+      <div className="auth-message-container">
+        <div className="auth-message-card">
+          <h2>Acceso restringido</h2>
+          <p>Por favor, inicia sesión para ver tus canciones.</p>
+        </div>
+      </div>
+    );
   }
 
   const filteredUserSongs = userSongs
-    .filter((song) => (difficultyFilter ? song.difficulty === difficultyFilter : true)) // Filtrar por dificultad
-    .filter((song) => (artistFilter ? song.artist.toLowerCase().includes(artistFilter.toLowerCase()) : true)) // Filtrar por artista
-    .filter((song) => (tuningFilter ? song.tuning.toLowerCase().includes(tuningFilter.toLowerCase()) : true)); // Filtrar por afinación
+    .filter((song) => (difficultyFilter ? song.difficulty === difficultyFilter : true))
+    .filter((song) => (artistFilter ? song.artist.toLowerCase().includes(artistFilter.toLowerCase()) : true))
+    .filter((song) => (tuningFilter ? song.tuning.toLowerCase().includes(tuningFilter.toLowerCase()) : true));
 
   return (
     <div className="my-songs-container">
