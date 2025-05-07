@@ -1,7 +1,7 @@
 function Header() {
   return (
     <header>
-      <h1>Guitar Trackr</h1>
+      {/* <h1>Guitar Trackr</h1> */}
     </header>
   );
 }

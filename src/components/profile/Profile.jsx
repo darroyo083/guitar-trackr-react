@@ -5,7 +5,7 @@ function Profile() {
   const { user } = useContext(AppContext);
 
   if (!user) {
-    return <p>No estás autenticado. Por favor, inicia sesión.</p>;
+    return <p style={{margin: "20px"}}>No estás autenticado. Por favor, inicia sesión.</p>;
   }
 
   return (
