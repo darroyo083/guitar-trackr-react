@@ -5,7 +5,7 @@ function SongDetails() {
   const { selectedSong } = useContext(AppContext);
 
   if (!selectedSong) {
-    return <p>Selecciona una canción para ver los detalles.</p>;
+    return <p>Selecciona una canción de la lista para ver los detalles aquí.</p>;
   }
 
   return (

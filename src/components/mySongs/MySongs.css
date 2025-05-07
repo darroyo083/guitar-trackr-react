@@ -1,0 +1,18 @@
+@import '../songList/SongList.css';
+
+.my-songs-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.my-songs-list {
+  flex: 1;
+  max-width: 50%; /* Limitar el ancho de la lista */
+}
+
+.my-songs-details {
+  flex: 1;
+  max-width: 50%; /* Limitar el ancho de los detalles */
+  border-left: 1px solid #ccc;
+  padding-left: 1rem;
+}
