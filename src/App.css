@@ -63,3 +63,35 @@
   font-size: 1rem;
   color: #555;
 }
+
+/* Asegurar que el contenedor principal ocupe toda la altura de la ventana */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* El contenido principal debe crecer para llenar el espacio disponible */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* Footer siempre al final */
+.footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.footer a {
+  color: #646cff;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}

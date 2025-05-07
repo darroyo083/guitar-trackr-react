@@ -3,7 +3,7 @@
 .my-songs-container {
   display: flex;
   gap: 2rem;
-  margin: 20px;
+  /* margin: 20px; */
 }
 
 .my-songs-list {

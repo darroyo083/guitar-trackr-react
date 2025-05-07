@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f9f9f9;
+  /* height: 100vh;
+  background-color: #f9f9f9; */
 }
 
 .profile-card {
@@ -47,8 +47,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f9f9f9;
+  /* height: 100vh;
+  background-color: #f9f9f9; */
 }
 
 .auth-message-card {
