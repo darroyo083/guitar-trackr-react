@@ -252,13 +252,13 @@
 
 .modal-content button[type="button"],
 .modal-content button:last-child {
-  background-color: #ff4a4a;
+  background-color: #ff8282;
   color: var(--text-primary);
 }
 
 .modal-content button[type="button"]:hover,
 .modal-content button:last-child:hover {
-  background-color: #d0d0d0;
+  background-color: #ff4a4a;
 }
 
 /* Vista de detalles en móvil */
