@@ -2,6 +2,14 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/AppContext';
 import SongDetails from '../songDetails/SongDetails';
 import './MySongs.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+AOS.init({
+  duration: 1000,
+  easing: 'ease-in-out-back',
+  // offset: 120,
+  anchorPlacement: 'top-center'
+});
 
 function MySongs() {
   const { user, userSongs, fetchUserSongs, removeSongFromUser, selectedSong, setSelectedSong } = useContext(AppContext);
@@ -101,7 +109,7 @@ function MySongs() {
           ) : (
             <ul className="song-list">
               {filteredUserSongs.map((song) => (
-                <li key={song.song_id} className="song-item">
+                <li data-aos="fade-right" key={song.song_id} className="song-item">
                   <div className="song-item-content" onClick={() => handleSongSelect(song)}>
                     <div className="song-item-title">{song.title}</div>
                     <div className="song-item-artist">Artista: {song.artist}</div>

@@ -252,7 +252,7 @@
 
 .modal-content button[type="button"],
 .modal-content button:last-child {
-  background-color: #e0e0e0;
+  background-color: #ff4a4a;
   color: var(--text-primary);
 }
 
