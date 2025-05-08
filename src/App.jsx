@@ -4,7 +4,8 @@ import SongList from './components/songList/SongList';
 import SongDetails from './components/songDetails/SongDetails';
 import Profile from './components/profile/Profile';
 import MySongs from './components/mySongs/MySongs';
-import Footer from './components/footer/Footer'; // Importar el Footer
+import Footer from './components/footer/Footer';
+import ThemeToggle from './components/themeToggle/ThemeToggle'; // Importa el componente
 import { AppProvider, AppContext } from './context/AppContext';
 import { useContext } from 'react';
 import "./App.css";
@@ -50,6 +51,7 @@ function AppContent() {
         {activeSection === 'profile' && <Profile />}
       </main>
       <Footer />
+      <ThemeToggle /> {/* Añade el botón de cambio de tema */}
     </div>
   );
 }

@@ -1,65 +1,107 @@
+/* Detalles de la canción */
 .song-details {
   position: sticky;
   top: 90px;
-  background-color: #ffffff; /* Fondo blanco */
-  padding: 1.5rem; /* Espaciado interno */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
-  border: 1px solid #ddd; /* Borde sutil */
-  font-family: Arial, sans-serif; /* Fuente limpia */
+  background-color: var(--surface);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  height: fit-content;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .song-details h2 {
+  color: var(--primary);
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-lg);
   font-size: 1.5rem;
-  color: #333; /* Color del texto */
-  text-align: center; /* Centrar el título */
+  text-align: center;
+  position: relative;
+}
+
+.song-details h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 3px;
 }
 
 .song-details p {
-  margin: 0.5rem 0; /* Espaciado entre párrafos */
-  font-size: 1rem;
-  color: #555; /* Color del texto */
+  margin: var(--spacing-md) 0;
+  display: flex;
+  align-items: center;
 }
 
 .song-details p strong {
-  color: #333; /* Color más oscuro para los títulos */
+  color: var(--text-primary);
+  margin-right: var(--spacing-sm);
+  min-width: 100px;
 }
 
 .song-details a {
-  color: #646cff; /* Color del enlace */
-  text-decoration: none; /* Sin subrayado */
-  font-weight: bold;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  transition: color var(--transition-normal);
+}
+
+.song-details a::after {
+  content: '↗';
+  margin-left: var(--spacing-xs);
+  font-size: 0.8rem;
 }
 
 .song-details a:hover {
-  text-decoration: underline; /* Subrayado al pasar el cursor */
+  color: var(--primary-dark);
+  text-decoration: underline;
 }
 
-.song-details .no-details {
-  text-align: center;
-  font-size: 1rem;
-  color: #888; /* Color gris para mensajes vacíos */
-}
-
+/* Mensaje cuando no hay canción seleccionada */
 .no-song-selected {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* height: 100%; */
   position: sticky;
   top: 90px;
-  background-color: #f9f9f9; /* Fondo claro */
-  border: 1px dashed #ccc; /* Borde punteado */
-  border-radius: 8px; /* Bordes redondeados */
-  padding: 1.5rem; /* Espaciado interno */
-  text-align: center; /* Centrar el texto */
-  color: #888; /* Color gris suave */
-  font-size: 1rem; /* Tamaño de fuente */
-  font-style: italic; /* Estilo cursiva */
+  background-color: var(--surface);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--text-secondary);
+  min-height: 300px;
+}
+
+.no-song-selected::before {
+  content: '🎸';
+  font-size: 3rem;
+  margin-bottom: var(--spacing-md);
+  opacity: 0.5;
 }
 
 .no-song-selected p {
+  max-width: 250px;
+  line-height: 1.5;
   margin: 0;
+  font-style: italic;
 }

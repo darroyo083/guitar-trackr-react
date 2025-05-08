@@ -22,8 +22,8 @@ function Navbar() {
       }
 
       const userData = await response.json();
-      login(userData); // Guardar el usuario en el contexto
-      setError(null); // Limpiar errores
+      login(userData);
+      setError(null);
     } catch (err) {
       setError(err.message);
     }
@@ -36,50 +36,61 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">Guitar Trackr</div>
-      <ul className="navbar-links">
-        <li>
-          <button
-            className={`navbar-button ${activeSection === 'home' ? 'active' : ''}`}
-            onClick={() => setActiveSection('home')}
-          >
-            Inicio
-          </button>
-        </li>
-        <li>
-          <button
-            className={`navbar-button ${activeSection === 'songs' ? 'active' : ''}`}
-            onClick={() => setActiveSection('songs')}
-          >
-            Canciones
-          </button>
-        </li>
-        <li>
-          <button
-            className={`navbar-button ${activeSection === 'my-songs' ? 'active' : ''}`}
-            onClick={() => setActiveSection('my-songs')}
-          >
-            Mis Canciones
-          </button>
-        </li>
-        <li>
-          <button
-            className={`navbar-button ${activeSection === 'profile' ? 'active' : ''}`}
-            onClick={() => setActiveSection('profile')}
-          >
-            Perfil
-          </button>
-        </li>
-      </ul>
-      <div>
+      
+      {/* Checkbox y label para el menú hamburguesa */}
+      <input type="checkbox" id="navbar-toggle" className="navbar-toggle" />
+      <label htmlFor="navbar-toggle" className="navbar-toggle-label">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+      
+      {/* El contenido que se colapsará en móviles */}
+      <div className="navbar-collapse">
+        <ul className="navbar-links">
+          <li>
+            <button
+              className={`navbar-button ${activeSection === 'home' ? 'active' : ''}`}
+              onClick={() => setActiveSection('home')}
+            >
+              Inicio
+            </button>
+          </li>
+          <li>
+            <button
+              className={`navbar-button ${activeSection === 'songs' ? 'active' : ''}`}
+              onClick={() => setActiveSection('songs')}
+            >
+              Canciones
+            </button>
+          </li>
+          <li>
+            <button
+              className={`navbar-button ${activeSection === 'my-songs' ? 'active' : ''}`}
+              onClick={() => setActiveSection('my-songs')}
+            >
+              Mis Canciones
+            </button>
+          </li>
+          <li>
+            <button
+              className={`navbar-button ${activeSection === 'profile' ? 'active' : ''}`}
+              onClick={() => setActiveSection('profile')}
+            >
+              Perfil
+            </button>
+          </li>
+        </ul>
+        
         {user ? (
-          <>
+          <div className="user-auth">
             <span className="navbar-user">Hola, {user.username}</span>
             <button className="navbar-button" onClick={handleLogout}>
               Logout
             </button>
-          </>
+          </div>
         ) : (
-          <div>
+          <div className="login-inputs">
             <input
               type="email"
               placeholder="Email"
