@@ -2,16 +2,18 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/AppContext';
 import SongDetails from '../songDetails/SongDetails';
 import './SongList.css';
-import '../mySongs/MySongs.css'; // Reutilizar estilos de "Mis Canciones"
+import '../mySongs/MySongs.css';
 
 function SongList() {
-  const { songs, setSongs, setSelectedSong, addSongToUser, userSongs, user } = useContext(AppContext);
+  const { songs, setSongs, setSelectedSong, selectedSong, addSongToUser, userSongs, user } = useContext(AppContext);
   const [difficultyFilter, setDifficultyFilter] = useState('');
   const [artistFilter, setArtistFilter] = useState('');
   const [tuningFilter, setTuningFilter] = useState('');
-  const [isEditing, setIsEditing] = useState(false); // Controlar si el formulario de edición está visible
-  const [isAdding, setIsAdding] = useState(false); // Controlar si el modal de añadir canción está visible
-  const [editingSong, setEditingSong] = useState(null); // Almacenar la canción que se está editando
+  const [isEditing, setIsEditing] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [editingSong, setEditingSong] = useState(null);
+  const [mobileDetailsView, setMobileDetailsView] = useState(false);
+
   const [newSong, setNewSong] = useState({
     title: '',
     artist: '',
@@ -36,6 +38,17 @@ function SongList() {
 
     fetchSongs();
   }, [setSongs]);
+
+  const handleSongSelect = (song) => {
+    setSelectedSong(song);
+    if (window.innerWidth <= 768) {
+      setMobileDetailsView(true);
+    }
+  };
+
+  const handleBackToList = () => {
+    setMobileDetailsView(false);
+  };
 
   const handleAddSong = async (e) => {
     e.preventDefault();
@@ -62,7 +75,7 @@ function SongList() {
       const addedSong = await response.json();
       setSongs((prevSongs) => [...prevSongs, addedSong]);
       setNewSong({ title: '', artist: '', difficulty: 'easy', tuning: '', tablature_url: '' });
-      setIsAdding(false); // Cerrar el modal
+      setIsAdding(false);
       alert('Canción añadida correctamente.');
     } catch (error) {
       console.error(error.message);
@@ -71,8 +84,8 @@ function SongList() {
   };
 
   const handleEditSong = (song) => {
-    setEditingSong(song); // Establecer la canción que se está editando
-    setIsEditing(true); // Mostrar el formulario de edición
+    setEditingSong(song);
+    setIsEditing(true);
   };
 
   const handleSaveEdit = async () => {
@@ -97,7 +110,7 @@ function SongList() {
       );
 
       alert('Canción editada correctamente.');
-      setIsEditing(false); // Ocultar el formulario de edición
+      setIsEditing(false);
     } catch (error) {
       console.error(error.message);
       alert('No se pudo editar la canción.');
@@ -107,7 +120,7 @@ function SongList() {
   const handleDeleteSong = async (songId) => {
     const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar esta canción?');
     if (!confirmDelete) {
-      return; // Si el usuario cancela, no se realiza ninguna acción
+      return;
     }
 
     try {
@@ -140,80 +153,89 @@ function SongList() {
 
   return (
     <div className="my-songs-container">
-      
+      {mobileDetailsView ? (
+        <div className="mobile-details-view">
+          <button className="back-to-list-button" onClick={handleBackToList}>
+            ← Volver a la lista
+          </button>
+          <SongDetails />
+        </div>
+      ) : (
+        <div className="my-songs-list">
+          <h2>Lista de Canciones</h2>
+          <div className="filter-section">
+            <label htmlFor="difficulty-filter">Filtrar por dificultad:</label>
+            <select
+              id="difficulty-filter"
+              value={difficultyFilter}
+              onChange={(e) => setDifficultyFilter(e.target.value)}
+            >
+              <option value="">Todas</option>
+              <option value="easy">Fácil</option>
+              <option value="medium">Media</option>
+              <option value="hard">Difícil</option>
+            </select>
+          </div>
+          <div className="filter-section">
+            <label htmlFor="artist-filter">Buscar por artista:</label>
+            <input
+              id="artist-filter"
+              type="text"
+              placeholder="Nombre del artista"
+              value={artistFilter}
+              onChange={(e) => setArtistFilter(e.target.value)}
+            />
+          </div>
+          <div className="filter-section">
+            <label htmlFor="tuning-filter">Buscar por afinación:</label>
+            <input
+              id="tuning-filter"
+              type="text"
+              placeholder="Afinación"
+              value={tuningFilter}
+              onChange={(e) => setTuningFilter(e.target.value)}
+            />
+          </div>
 
-      {/* Columna izquierda: Lista de canciones */}
-      <div className="my-songs-list">
-        <h2>Lista de Canciones</h2>
-        <div className="filter-section">
-          <label htmlFor="difficulty-filter">Filtrar por dificultad:</label>
-          <select
-            id="difficulty-filter"
-            value={difficultyFilter}
-            onChange={(e) => setDifficultyFilter(e.target.value)}
-          >
-            <option value="">Todas</option>
-            <option value="easy">Fácil</option>
-            <option value="medium">Media</option>
-            <option value="hard">Difícil</option>
-          </select>
-        </div>
-        <div className="filter-section">
-          <label htmlFor="artist-filter">Buscar por artista:</label>
-          <input
-            id="artist-filter"
-            type="text"
-            placeholder="Nombre del artista"
-            value={artistFilter}
-            onChange={(e) => setArtistFilter(e.target.value)}
-          />
-        </div>
-        <div className="filter-section">
-          <label htmlFor="tuning-filter">Buscar por afinación:</label>
-          <input
-            id="tuning-filter"
-            type="text"
-            placeholder="Afinación"
-            value={tuningFilter}
-            onChange={(e) => setTuningFilter(e.target.value)}
-          />
-        </div>
+          {user?.role === 'admin' && (
+            <button className="add-song-button" onClick={() => setIsAdding(true)}>
+              Añadir Nueva Canción
+            </button>
+          )}
 
-      {/* Botón para añadir nueva canción */}
-      {user?.role === 'admin' && (
-        <button className="add-song-button" onClick={() => setIsAdding(true)}>
-          Añadir Nueva Canción
-        </button>
+          <ul className="song-list">
+            {filteredSongs.map((song) => (
+              <li key={song.song_id} className="song-item">
+                <div className="song-item-content" onClick={() => handleSongSelect(song)}>
+                  <div className="song-item-title">{song.title}</div>
+                  <div className="song-item-artist">Artista: {song.artist}</div>
+                  <div className="song-item-hint">Haz clic para ver los detalles</div>
+                </div>
+                <div className="song-item-actions">
+                  <button onClick={(e) => { e.stopPropagation(); addSongToUser(song.song_id); }}>
+                    Añadir al repertorio
+                  </button>
+                  {user?.role === 'admin' && (
+                    <>
+                      <button onClick={(e) => { e.stopPropagation(); handleEditSong(song); }}>
+                        Editar
+                      </button>
+                      <button onClick={(e) => { e.stopPropagation(); handleDeleteSong(song.song_id); }}>
+                        Eliminar
+                      </button>
+                    </>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
 
-        <ul className="song-list">
-          {filteredSongs.map((song) => (
-            <li key={song.song_id} className="song-item">
-              <div className="song-item-content" onClick={() => setSelectedSong(song)}>
-                <div className="song-item-title">{song.title}</div>
-                <div className="song-item-artist">Artista: {song.artist}</div>
-                <div className="song-item-hint">Haz clic para ver los detalles</div>
-              </div>
-              <div className="song-item-actions">
-                <button onClick={(e) => { e.stopPropagation(); addSongToUser(song.song_id); }}>Añadir al repertorio</button>
-                {user?.role === 'admin' && (
-                  <>
-                    <button onClick={(e) => { e.stopPropagation(); handleEditSong(song); }}>Editar</button>
-                    <button onClick={(e) => { e.stopPropagation(); handleDeleteSong(song.song_id); }}>Eliminar</button>
-                  </>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Columna derecha: Detalles de la canción */}
-      <div className="my-songs-details">
+      <div className="my-songs-details desktop-only">
         <SongDetails />
       </div>
 
-      {/* Modal para añadir nueva canción */}
       {isAdding && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -253,16 +275,17 @@ function SongList() {
                 value={newSong.tablature_url}
                 onChange={(e) => setNewSong({ ...newSong, tablature_url: e.target.value })}
               />
-              <button type="submit">Guardar</button>
-              <button type="button" onClick={() => setIsAdding(false)}>
-                Cancelar
-              </button>
+              <div className="modal-buttons">
+                <button type="submit">Guardar</button>
+                <button type="button" onClick={() => setIsAdding(false)}>
+                  Cancelar
+                </button>
+              </div>
             </form>
           </div>
         </div>
       )}
 
-      {/* Modal para editar canción */}
       {isEditing && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -299,8 +322,10 @@ function SongList() {
               value={editingSong.tablature_url}
               onChange={(e) => setEditingSong({ ...editingSong, tablature_url: e.target.value })}
             />
-            <button onClick={handleSaveEdit}>Guardar Cambios</button>
-            <button onClick={() => setIsEditing(false)}>Cancelar</button>
+            <div className="modal-buttons">
+              <button onClick={handleSaveEdit}>Guardar Cambios</button>
+              <button onClick={() => setIsEditing(false)}>Cancelar</button>
+            </div>
           </div>
         </div>
       )}

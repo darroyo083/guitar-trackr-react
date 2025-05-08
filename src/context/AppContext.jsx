@@ -4,38 +4,51 @@ export const AppContext = createContext();
 
 export function AppProvider({ children }) {
   const [songs, setSongs] = useState([]);
-  const [selectedSong, setSelectedSong] = useState(null); // Estado para la canción seleccionada
+  const [selectedSong, setSelectedSong] = useState(null);
+  
+  // Recuperar el usuario del localStorage
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
-  const [activeSection, setActiveSection] = useState('home');
+  
+  // Recuperar la sección activa del localStorage
+  const [activeSection, setActiveSection] = useState(() => {
+    const storedSection = localStorage.getItem('activeSection');
+    return storedSection || 'home';
+  });
+  
   const [userSongs, setUserSongs] = useState([]);
+
+  // Guardar la sección activa en localStorage cada vez que cambie
+  useEffect(() => {
+    localStorage.setItem('activeSection', activeSection);
+  }, [activeSection]);
 
   useEffect(() => {
     if (user) {
-      fetchUserSongs(); // Cargar las canciones del usuario al iniciar la aplicación
+      fetchUserSongs();
     }
   }, [user]);
 
   const login = async (userData) => {
     const userWithId = {
-      user_id: userData.id, // Asegúrate de mapear el campo `id` a `user_id`
+      user_id: userData.id,
       username: userData.username,
       email: userData.email,
       role: userData.role,
       token: userData.token,
     };
     setUser(userWithId);
-    localStorage.setItem('user', JSON.stringify(userWithId)); // Guardar en localStorage
+    localStorage.setItem('user', JSON.stringify(userWithId));
 
-    // Cargar las canciones del usuario después de que el estado `user` se haya actualizado
     await fetchUserSongs();
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user'); // Eliminar del localStorage
+    localStorage.removeItem('user');
+    // No eliminamos activeSection al cerrar sesión
   };
 
   const addSongToUser = async (songId) => {
@@ -60,6 +73,9 @@ export function AppProvider({ children }) {
 
       // Actualizar el estado de las canciones eliminando la canción añadida
       setSongs((prevSongs) => prevSongs.filter((song) => song.song_id !== songId));
+      
+      // Actualizar las canciones del usuario
+      await fetchUserSongs();
 
       alert('Canción añadida a tu repertorio.');
     } catch (error) {
@@ -88,6 +104,9 @@ export function AppProvider({ children }) {
         throw new Error(error || 'Error al quitar la canción.');
       }
 
+      // Actualizar las canciones del usuario
+      setUserSongs((prevSongs) => prevSongs.filter((song) => song.song_id !== songId));
+
       alert('Canción eliminada de tu repertorio.');
     } catch (error) {
       console.error(error.message);
@@ -97,7 +116,6 @@ export function AppProvider({ children }) {
 
   const fetchUserSongs = async () => {
     if (!user || !user.user_id) {
-      // Si el usuario no está definido, simplemente retorna sin mostrar alerta
       return;
     }
 
@@ -115,7 +133,7 @@ export function AppProvider({ children }) {
       }
 
       const data = await response.json();
-      setUserSongs(data.songs); // Extraer solo las canciones del usuario
+      setUserSongs(data.songs);
     } catch (error) {
       console.error(error.message);
       alert('No se pudieron cargar las canciones del usuario.');

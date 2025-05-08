@@ -141,6 +141,8 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  position: relative;
+  padding-bottom: 30px; /* Añadir espacio para el mensaje de error */
 }
 
 .navbar-input {
@@ -173,14 +175,18 @@
 
 .navbar-error {
   position: absolute;
-  background-color: #ffebee;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(244, 67, 54, 0.1);
   color: #e53935;
-  padding: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--border-radius);
   font-size: 0.8rem;
   margin-top: 2px;
-  box-shadow: var(--shadow-sm);
-  z-index: 10;
+  text-align: center;
+  z-index: 1;
+  margin-bottom: 0;
 }
 
 /* Responsive */
@@ -254,6 +260,7 @@
     flex-direction: column;
     width: 100%;
     align-items: flex-start;
+    padding-bottom: 30px; /* Más espacio en móviles */
   }
   
   .navbar-input {
@@ -265,5 +272,9 @@
     width: 100%;
     margin-top: var(--spacing-sm);
     text-align: center;
+  }
+  
+  .navbar-error {
+    padding: var(--spacing-xs);
   }
 }
