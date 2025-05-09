@@ -65,8 +65,8 @@
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
-.song-item:hover {
-  transform: translateY(-3px);
+#song-elem:hover {
+  transform: scale(1.04) translateY(-3px);
   box-shadow: var(--shadow-md);
 }
 

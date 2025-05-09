@@ -6,10 +6,12 @@ import '../mySongs/MySongs.css';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 AOS.init({
-  duration: 1000,
-  easing: 'ease-in-out-back',
-  // offset: 120,
-  anchorPlacement: 'top-center'
+  duration: 700,
+   easing: 'ease-in-out-back',
+   offset: 100,
+   anchorPlacement: 'top-top',
+   delay: 0,
+  mirror: true
 });
 
 function SongList() {
@@ -213,7 +215,7 @@ function SongList() {
 
           <ul className="song-list">
             {filteredSongs.map((song) => (
-              <li data-aos="fade-right" key={song.song_id} className="song-item">
+              <li data-aos="fade-right" key={song.song_id} id="song-elem" className="song-item">
                 <div className="song-item-content" onClick={() => handleSongSelect(song)}>
                   <div className="song-item-title">{song.title}</div>
                   <div className="song-item-artist">Artista: {song.artist}</div>
