@@ -1,0 +1,84 @@
+@import '../songList/SongList.css';
+
+.my-songs-container {
+  display: flex;
+  gap: var(--spacing-xl);
+}
+
+.my-songs-list {
+  flex: 1;
+  max-width: 60%;
+}
+
+.my-songs-list h2 {
+  color: var(--primary);
+  position: relative;
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  display: inline-block;
+}
+
+.my-songs-list h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 3px;
+}
+
+.my-songs-details {
+  flex: 1;
+  max-width: 40%;
+}
+
+.my-songs-empty {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--text-secondary);
+  background-color: var(--surface);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.my-songs-empty h3 {
+  color: var(--text-primary);
+  margin-top: 0;
+}
+
+.my-songs-empty p {
+  margin-bottom: var(--spacing-md);
+}
+
+.my-songs-empty button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: background-color var(--transition-normal);
+}
+
+.my-songs-empty button:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Sobrescribir estilos para canción en Mi repertorio */
+.my-songs-list .song-item-content {
+  border-left: 4px solid var(--secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .my-songs-container {
+    flex-direction: column;
+  }
+  
+  .my-songs-list,
+  .my-songs-details {
+    max-width: 100%;
+  }
+}

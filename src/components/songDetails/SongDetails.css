@@ -1,0 +1,107 @@
+/* Detalles de la canción */
+.song-details {
+  position: sticky;
+  top: 90px;
+  background-color: var(--surface);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  height: fit-content;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.song-details h2 {
+  color: var(--primary);
+  margin-top: 0;
+  margin-bottom: var(--spacing-lg);
+  font-size: 1.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.song-details h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 3px;
+}
+
+.song-details p {
+  margin: var(--spacing-md) 0;
+  display: flex;
+  align-items: center;
+}
+
+.song-details p strong {
+  color: var(--text-primary);
+  margin-right: var(--spacing-sm);
+  min-width: 100px;
+}
+
+.song-details a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  transition: color var(--transition-normal);
+}
+
+.song-details a::after {
+  content: '↗';
+  margin-left: var(--spacing-xs);
+  font-size: 0.8rem;
+}
+
+.song-details a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+/* Mensaje cuando no hay canción seleccionada */
+.no-song-selected {
+  position: sticky;
+  top: 90px;
+  background-color: var(--surface);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--text-secondary);
+  min-height: 300px;
+}
+
+.no-song-selected::before {
+  content: '🎸';
+  font-size: 3rem;
+  margin-bottom: var(--spacing-md);
+  opacity: 0.5;
+}
+
+.no-song-selected p {
+  max-width: 250px;
+  line-height: 1.5;
+  margin: 0;
+  font-style: italic;
+}

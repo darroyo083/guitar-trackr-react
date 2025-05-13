@@ -1,0 +1,137 @@
+/* Contenedor de perfil */
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-xl) 0;
+}
+
+.profile-card {
+  background-color: var(--surface);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-xl);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.profile-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.profile-card h2 {
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: var(--spacing-lg);
+  font-size: 1.8rem;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  margin: 0 auto var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.profile-info {
+  margin-bottom: var(--spacing-lg);
+}
+
+.profile-info p {
+  margin: var(--spacing-md) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-info strong {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.logout-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: background-color var(--transition-normal), transform var(--transition-normal);
+  margin-top: var(--spacing-md);
+}
+
+.logout-button:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+}
+
+/* Mensaje de acceso restringido */
+.auth-message-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
+.auth-message-card {
+  background-color: var(--surface);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-xl);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.auth-message-card h2 {
+  color: #f44336;
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+  font-size: 1.5rem;
+}
+
+.auth-message-card p {
+  color: var(--text-secondary);
+  margin-bottom: 0;
+  font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-card,
+  .auth-message-card {
+    width: 90%;
+    padding: var(--spacing-lg);
+  }
+}

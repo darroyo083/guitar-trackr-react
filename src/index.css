@@ -1,0 +1,194 @@
+:root[data-theme="light"] {
+  /* Paleta de colores principal */
+  --text: #121217;
+  --background: #f1f1f8;
+  --primary: #222772;
+  --primary-light: #474bb1;
+  --primary-dark: #121652;
+  --secondary: #7a81eb;
+  --secondary-light: #a5aaff;
+  --secondary-dark: #5259c7;
+  --accent: #0615e5;
+  
+  /* Colores neutrales */
+  --surface: #ffffff;
+  --text-primary: #121217;
+  --text-secondary: #47475e;
+  --border: #d1d1e0;
+}
+
+:root[data-theme="dark"] {
+  --text: #e8e8ed;
+  --background: #07070e;
+  --primary: #8d92dd;
+  --primary-light: #b4b9ff;
+  --primary-dark: #6870c2;
+  --secondary: #141b85;
+  --secondary-light: #3942aa;
+  --secondary-dark: #0a1060;
+  --accent: #1a29f9;
+  
+  /* Colores neutrales */
+  --surface: #14141c;
+  --text-primary: #e8e8ed;
+  --text-secondary: #b0b0c0;
+  --border: #2d2d3d;
+}
+
+/* Aplicar tema predeterminado (claro) si no hay preferencia establecida */
+:root {
+  /* Si no hay data-theme, usar estos valores predeterminados */
+  --text: #121217;
+  --background: #f1f1f8;
+  --primary: #222772;
+  --primary-light: #474bb1;
+  --primary-dark: #121652;
+  --secondary: #7a81eb;
+  --secondary-light: #a5aaff;
+  --secondary-dark: #5259c7;
+  --accent: #0615e5;
+  
+  /* Colores neutrales */
+  --surface: #ffffff;
+  --text-primary: #121217;
+  --text-secondary: #47475e;
+  --border: #d1d1e0;
+  
+  /* Fuentes */
+  --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  
+  /* Espaciado */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Bordes y sombras */
+  --border-radius: 8px;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 8px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 16px rgba(0,0,0,0.16);
+  
+  /* Transiciones */
+  --transition-fast: 0.2s;
+  --transition-normal: 0.3s;
+}
+
+/* Detección automática de preferencia de tema oscuro */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --text: #e8e8ed;
+    --background: #07070e;
+    --primary: #8d92dd;
+    --primary-light: #b4b9ff;
+    --primary-dark: #6870c2;
+    --secondary: #141b85;
+    --secondary-light: #3942aa;
+    --secondary-dark: #0a1060;
+    --accent: #1a29f9;
+    
+    /* Colores neutrales */
+    --surface: #14141c;
+    --text-primary: #e8e8ed;
+    --text-secondary: #b0b0c0;
+    --border: #2d2d3d;
+  }
+}
+
+/* Reiniciar estilos básicos */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-family);
+  background-color: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: 1rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  transition: all var(--transition-normal);
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--surface);
+  color: var(--text-primary);
+  transition: border-color var(--transition-normal);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color var(--transition-normal);
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Clase para alternar el tema */
+.theme-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+}
+
+.theme-toggle:hover {
+  transform: rotate(30deg);
+  background-color: var(--primary);
+  color: white;
+}
