@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
+import { apiUrl, authHeaders } from '../config/api';
 
 export const AppContext = createContext();
 
@@ -58,12 +59,9 @@ export function AppProvider({ children }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:3020/api/songs/${songId}/add`, {
+      const response = await fetch(apiUrl(`/api/songs/${songId}/add`), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: authHeaders(user.token),
       });
 
       if (!response.ok) {
@@ -91,12 +89,9 @@ export function AppProvider({ children }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:3020/api/songs/${songId}/remove`, {
+      const response = await fetch(apiUrl(`/api/songs/${songId}/remove`), {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: authHeaders(user.token),
       });
 
       if (!response.ok) {
@@ -120,11 +115,9 @@ export function AppProvider({ children }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:3020/api/users/${user.user_id}`, {
+      const response = await fetch(apiUrl(`/api/users/${user.user_id}`), {
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: authHeaders(user.token),
       });
 
       if (!response.ok) {

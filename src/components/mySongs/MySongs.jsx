@@ -12,7 +12,7 @@ AOS.init({
 });
 
 function MySongs() {
-  const { user, userSongs, fetchUserSongs, removeSongFromUser, selectedSong, setSelectedSong } = useContext(AppContext);
+  const { user, userSongs, fetchUserSongs, removeSongFromUser, setSelectedSong } = useContext(AppContext);
   const [difficultyFilter, setDifficultyFilter] = useState('');
   const [artistFilter, setArtistFilter] = useState('');
   const [tuningFilter, setTuningFilter] = useState('');

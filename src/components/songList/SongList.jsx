@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/AppContext';
+import { apiUrl, authHeaders } from '../../config/api';
 import SongDetails from '../songDetails/SongDetails';
 import './SongList.css';
 import '../mySongs/MySongs.css';
@@ -13,7 +14,7 @@ AOS.init({
 });
 
 function SongList() {
-  const { songs, setSongs, setSelectedSong, selectedSong, addSongToUser, userSongs, user } = useContext(AppContext);
+  const { songs, setSongs, setSelectedSong, addSongToUser, userSongs, user } = useContext(AppContext);
   const [difficultyFilter, setDifficultyFilter] = useState('');
   const [artistFilter, setArtistFilter] = useState('');
   const [tuningFilter, setTuningFilter] = useState('');
@@ -33,7 +34,7 @@ function SongList() {
   useEffect(() => {
     const fetchSongs = async () => {
       try {
-        const response = await fetch('http://localhost:3020/api/songs');
+        const response = await fetch(apiUrl('/api/songs'));
         if (!response.ok) {
           throw new Error('Error al cargar las canciones.');
         }
@@ -66,12 +67,9 @@ function SongList() {
     }
 
     try {
-      const response = await fetch('http://localhost:3020/api/songs', {
+      const response = await fetch(apiUrl('/api/songs'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: authHeaders(user.token),
         body: JSON.stringify(newSong),
       });
 
@@ -98,12 +96,9 @@ function SongList() {
 
   const handleSaveEdit = async () => {
     try {
-      const response = await fetch(`http://localhost:3020/api/songs/${editingSong.song_id}`, {
+      const response = await fetch(apiUrl(`/api/songs/${editingSong.song_id}`), {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: authHeaders(user.token),
         body: JSON.stringify(editingSong),
       });
 
@@ -132,11 +127,9 @@ function SongList() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3020/api/songs/${songId}`, {
+      const response = await fetch(apiUrl(`/api/songs/${songId}`), {
         method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: authHeaders(user.token),
       });
 
       if (!response.ok) {
